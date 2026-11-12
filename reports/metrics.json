@@ -1,0 +1,148 @@
+{
+  "model_name": "lgbm_unweighted",
+  "version": "202611121404",
+  "trained_at": "2026-11-12T14:04:56+00:00",
+  "data": "PaySim (6.36M synthetic mobile-money txns), TRANSFER + CASH_OUT only",
+  "split": {
+    "train": 1939286,
+    "val": 415561,
+    "test": 415562,
+    "method": "stratified 70/15/15"
+  },
+  "features": [
+    "is_transfer",
+    "amount",
+    "log_amount",
+    "oldbalanceOrg",
+    "oldbalanceDest",
+    "amount_to_balance",
+    "drains_account",
+    "orig_balance_zero",
+    "dest_balance_zero",
+    "hour",
+    "is_night"
+  ],
+  "threshold": 0.007,
+  "cost_model": {
+    "review_cost_per_alert": 15.0,
+    "missed_fraud": "txn amount"
+  },
+  "validation": {
+    "logreg_classweight": {
+      "pr_auc": 0.9959494326954325,
+      "roc_auc": 0.9986601576236565,
+      "recall_at_p90": 0.9967532467532467,
+      "recall_at_p95": 0.9967532467532467
+    },
+    "logreg_smote": {
+      "pr_auc": 0.9910481967547092,
+      "roc_auc": 0.9978616282035485,
+      "recall_at_p90": 0.9959415584415584,
+      "recall_at_p95": 0.9959415584415584
+    },
+    "lgbm_unweighted": {
+      "pr_auc": 0.996396006201069,
+      "roc_auc": 0.9985629028948166,
+      "recall_at_p90": 0.9959415584415584,
+      "recall_at_p95": 0.9959415584415584
+    },
+    "lgbm_classweight": {
+      "pr_auc": 0.8941854067309521,
+      "roc_auc": 0.9965753196147249,
+      "recall_at_p90": 0.9943181818181818,
+      "recall_at_p95": 0.9943181818181818
+    },
+    "lgbm_smote": {
+      "pr_auc": 0.9967530197133647,
+      "roc_auc": 0.9987107675395546,
+      "recall_at_p90": 0.9959415584415584,
+      "recall_at_p95": 0.9959415584415584
+    },
+    "lgbm_ablation_no_drain": {
+      "pr_auc": 0.8464593601620708,
+      "roc_auc": 0.9921067710229525,
+      "recall_at_p90": 0.6818181818181818,
+      "recall_at_p95": 0.575487012987013
+    }
+  },
+  "test": {
+    "pr_auc": 0.9974784507388358,
+    "roc_auc": 0.9981381633656089,
+    "recall_at_p90": 0.9967532467532467,
+    "recall_at_p95": 0.9967532467532467
+  },
+  "test_logreg_baseline": {
+    "pr_auc": 0.9969317861677114,
+    "roc_auc": 0.9983027441267249,
+    "recall_at_p90": 0.9967532467532467,
+    "recall_at_p95": 0.9967532467532467
+  },
+  "test_ablation_no_drain": {
+    "pr_auc": 0.8370438176389017,
+    "roc_auc": 0.9955193729682815,
+    "recall_at_p90": 0.6688311688311688,
+    "recall_at_p95": 0.5706168831168831
+  },
+  "test_cost_at_threshold": {
+    "threshold": 0.007,
+    "missed_fraud_loss": 822153.2899999999,
+    "review_cost": 18795.0,
+    "total_cost": 840948.2899999999,
+    "alerts": 1253,
+    "tp": 1228,
+    "fp": 25,
+    "fn": 4
+  },
+  "test_cost_at_0.5": {
+    "threshold": 0.5,
+    "missed_fraud_loss": 822153.2899999999,
+    "review_cost": 18420.0,
+    "total_cost": 840573.2899999999,
+    "alerts": 1228,
+    "tp": 1228,
+    "fp": 0,
+    "fn": 4
+  },
+  "test_cost_no_model": 1885200330.01,
+  "ablation_threshold": 0.001,
+  "ablation_test_cost_at_threshold": {
+    "threshold": 0.001,
+    "missed_fraud_loss": 4888270.21,
+    "review_cost": 461430.0,
+    "total_cost": 5349700.21,
+    "alerts": 30762,
+    "tp": 1224,
+    "fp": 29538,
+    "fn": 8
+  },
+  "ablation_test_cost_at_0.5": {
+    "threshold": 0.5,
+    "missed_fraud_loss": 75041622.77999999,
+    "review_cost": 14685.0,
+    "total_cost": 75056307.77999999,
+    "alerts": 979,
+    "tp": 858,
+    "fp": 121,
+    "fn": 374
+  },
+  "time_split_check": {
+    "pr_auc": 0.9997506563272607,
+    "roc_auc": 0.999983996199201,
+    "recall_at_p90": 0.9996229260935143,
+    "recall_at_p95": 0.9996229260935143,
+    "test_fraud_rate": 0.021278985797961968
+  },
+  "shap_mean_abs": {
+    "oldbalanceDest": 0.1249,
+    "oldbalanceOrg": 0.1164,
+    "drains_account": 0.1078,
+    "amount": 0.0435,
+    "dest_balance_zero": 0.0212,
+    "orig_balance_zero": 0.0205,
+    "hour": 0.013,
+    "log_amount": 0.0068,
+    "amount_to_balance": 0.0057,
+    "is_transfer": 0.0043,
+    "is_night": 0.0001
+  }
+}
