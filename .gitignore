@@ -10,3 +10,4 @@ mlflow.db
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+.claude/
