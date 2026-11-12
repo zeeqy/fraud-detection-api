@@ -1,6 +1,6 @@
 """Download PaySim into data/raw/paysim.parquet.
 
-Tries the canonical Kaggle dataset first (needs KAGGLE_USERNAME/KAGGLE_KEY or ~/.kaggle/kaggle.json),
+Tries the canonical Kaggle dataset first (needs Kaggle creds in env or ~/.kaggle),
 then falls back to a public Hugging Face mirror that needs no login.
 """
 
@@ -18,8 +18,17 @@ KAGGLE_REF = "ealaxi/paysim1"
 HF_REPO = "purulalwani/Synthetic-Financial-Datasets-For-Fraud-Detection"
 HF_FILE = "financial_txns.parquet"
 EXPECTED_COLS = [
-    "step", "type", "amount", "nameOrig", "oldbalanceOrg", "newbalanceOrig",
-    "nameDest", "oldbalanceDest", "newbalanceDest", "isFraud", "isFlaggedFraud",
+    "step",
+    "type",
+    "amount",
+    "nameOrig",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "nameDest",
+    "oldbalanceDest",
+    "newbalanceDest",
+    "isFraud",
+    "isFlaggedFraud",
 ]
 
 
