@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import warnings
+
 import numpy as np
 import pandas as pd
 import shap
@@ -15,7 +17,10 @@ class Explainer:
         self._explainer = shap.TreeExplainer(model)
 
     def shap_values(self, X: pd.DataFrame) -> np.ndarray:
-        vals = self._explainer.shap_values(X[FEATURE_COLS])
+        with warnings.catch_warnings():
+            # shap warns that LightGBM output is a list of arrays; handled just below.
+            warnings.filterwarnings("ignore", message="LightGBM binary classifier")
+            vals = self._explainer.shap_values(X[FEATURE_COLS])
         if isinstance(vals, list):  # older shap: one array per class
             vals = vals[1]
         vals = np.asarray(vals)
