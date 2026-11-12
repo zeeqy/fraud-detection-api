@@ -1,7 +1,7 @@
 {
   "model_name": "lgbm_unweighted",
-  "version": "202611121404",
-  "trained_at": "2026-11-12T14:04:56+00:00",
+  "version": "202611121422",
+  "trained_at": "2026-11-12T14:22:45+00:00",
   "data": "PaySim (6.36M synthetic mobile-money txns), TRANSFER + CASH_OUT only",
   "split": {
     "train": 1939286,
@@ -63,6 +63,12 @@
       "roc_auc": 0.9921067710229525,
       "recall_at_p90": 0.6818181818181818,
       "recall_at_p95": 0.575487012987013
+    },
+    "logreg_ablation_no_drain": {
+      "pr_auc": 0.3049989932479202,
+      "roc_auc": 0.967311544298522,
+      "recall_at_p90": 0.0,
+      "recall_at_p95": 0.0
     }
   },
   "test": {
@@ -76,6 +82,12 @@
     "roc_auc": 0.9983027441267249,
     "recall_at_p90": 0.9967532467532467,
     "recall_at_p95": 0.9967532467532467
+  },
+  "test_logreg_ablation_no_drain": {
+    "pr_auc": 0.294383090055759,
+    "roc_auc": 0.9693878677467394,
+    "recall_at_p90": 0.0,
+    "recall_at_p95": 0.0
   },
   "test_ablation_no_drain": {
     "pr_auc": 0.8370438176389017,

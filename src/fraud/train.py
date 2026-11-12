@@ -91,11 +91,13 @@ def experiments(X, y, tr, va):
         "lgbm_classweight": lambda: fit_lgb(Xtr, ytr, Xva, yva, scale_pos_weight=spw),
         "lgbm_smote": lambda: fit_lgb(sm_X, sm_y, Xva, yva),
         "lgbm_ablation_no_drain": lambda: fit_lgb(abl_tr, ytr, abl_va, yva),
+        "logreg_ablation_no_drain": lambda: logreg(class_weight="balanced").fit(abl_tr, ytr),
     }
 
 
 def predict(model, X):
-    cols = getattr(model, "feature_name_", None) or FEATURE_COLS
+    cols = getattr(model, "feature_name_", None) or getattr(model, "feature_names_in_", None)
+    cols = list(cols) if cols is not None else FEATURE_COLS
     return model.predict_proba(X[cols])[:, 1]
 
 
@@ -233,6 +235,9 @@ def main():
         "test": test_rep,
         "test_logreg_baseline": score_report(
             y[te], predict(models["logreg_classweight"], X.iloc[te])
+        ),
+        "test_logreg_ablation_no_drain": score_report(
+            y[te], predict(models["logreg_ablation_no_drain"], X.iloc[te])
         ),
         "test_ablation_no_drain": score_report(
             y[te], predict(models["lgbm_ablation_no_drain"], X.iloc[te])

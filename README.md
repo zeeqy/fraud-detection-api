@@ -33,8 +33,9 @@ This project builds that service end to end: EDA, leakage-safe features, model c
 | Logistic regression (class weights) | 0.997 | 99.7% |
 | **LightGBM (served)** | **0.997** | **99.7%** |
 | LightGBM **without** account-drain features (ablation) | 0.837 | 57.1% |
+| Logistic regression **without** account-drain features | 0.294 | 0.0% |
 
-PaySim is close to linearly separable once you know whether the account was drained, so logistic regression nearly matches LightGBM. **The ablation is the honest number**: it shows what's left when the simulator's main giveaway is removed.
+PaySim is close to linearly separable once you know whether the account was drained, so logistic regression nearly matches LightGBM. **The ablation is the honest number**: it shows what's left when the simulator's main giveaway is removed. It's also where LightGBM earns its place (0.84 vs 0.29 PR-AUC).
 
 ### Business trade-off
 Cost model: a missed fraud costs its amount, and every alert costs RM15 (review plus friction). PaySim units are treated as RM.
@@ -94,7 +95,7 @@ curl -X POST localhost:8000/predict -H "Content-Type: application/json" \
     {"feature": "oldbalanceOrg", "impact": 0.11, "direction": "raises risk",
      "text": "sender balance before the transaction is 250,000.00 (raises risk)"}
   ],
-  "model_version": "202611121404"
+  "model_version": "202611121422"
 }
 ```
 ```bash
