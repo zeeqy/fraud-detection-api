@@ -1,5 +1,7 @@
 # ---- build: resolve deps with uv into /app/.venv --------------------------------------------
-FROM ghcr.io/astral-sh/uv:0.13.7-python3.12-bookworm-slim AS build
+# Same base as runtime so the venv's python path matches; uv binary pinned from its own image.
+FROM python:3.12-slim-bookworm AS build
+COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /bin/
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md ./
