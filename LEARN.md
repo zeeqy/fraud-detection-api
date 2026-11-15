@@ -18,7 +18,7 @@ The decision threshold is set by a business cost model (missed fraud vs analyst 
 | Threshold | Min business cost on validation; ties go to more fraud caught | 0.5 default | 0.5 is arbitrary; cost is what the business cares about |
 | Explanations | TreeSHAP top 3, mapped to sentences | Feature importance only | Analysts need per-transaction reasons, not global ones |
 | Serving format | joblib bundle (model + threshold + metadata) | MLflow model registry | One file, so the Docker image needs no MLflow server. MLflow is used for experiment tracking |
-| Docker | Multi-stage uv build to slim runtime, non-root, healthcheck | Single stage | Smaller image and less attack surface; ready for AWS in project 09 |
+| Docker | Multi-stage uv build to slim runtime, non-root, healthcheck | Single stage | Smaller image and less attack surface; ready for AWS in project 05 |
 
 ## 3. Concepts to understand
 - **Class imbalance:** 0.3% fraud means "always legit" scores 99.7% accuracy. Fix the metric (PR-AUC) and optionally the training (weights, SMOTE). `src/fraud/train.py`
@@ -44,7 +44,7 @@ The decision threshold is set by a business cost model (missed fraud vs analyst 
 7. **How does the API explain a decision?** TreeSHAP computes each feature's contribution to that one prediction. I take the top 3 by absolute value and map each to a sentence like "transaction empties the sender's account (raises risk)".
 8. **How do you avoid training/serving mismatch?** One `build_features()` function in `src/fraud/features.py` is imported by both the training script and the API. Tests cover it.
 9. **What happens with a PAYMENT transaction?** It's never fraudulent in the training data, so the API returns `scored: false`, probability 0 and "allow", with that reason. It doesn't push out-of-distribution data through the model.
-10. **How would you take this to production?** Use real data with customer history and velocity features, calibrate probabilities, optimise under an alert budget, add drift and false-positive monitoring per customer segment, version models in a registry, and deploy the container to AWS (planned in project 09).
+10. **How would you take this to production?** Use real data with customer history and velocity features, calibrate probabilities, optimise under an alert budget, add drift and false-positive monitoring per customer segment, version models in a registry, and deploy the container to AWS (planned in project 05).
 
 ## 5. Weaknesses and how to say them
 - **Synthetic data.** "It's PaySim, a simulator, so the fraud pattern is far cleaner than reality. I quantified that with an ablation: without the account-drain signal, PR-AUC drops from 0.997 to 0.84."

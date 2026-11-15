@@ -152,4 +152,4 @@ reports/                    metrics.json + figures
 - Train on real (or harder synthetic) data with customer history and velocity features.
 - Optimise the threshold under a daily alert budget instead of unconstrained cost.
 - Add drift monitoring and calibrated probabilities.
-- Deploy to AWS (project 09): the image is already slim, non-root and health-checked.
+- Deploy to AWS (project 05): the image is already slim, non-root and health-checked.

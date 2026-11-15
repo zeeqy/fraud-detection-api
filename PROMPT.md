@@ -1,6 +1,6 @@
-# 05 Fraud Detection API
+# 04 Fraud Detection API
 
-Transaction fraud model served as a real API with explanations. Project 09 will deploy this to AWS, so keep it container-ready.
+Transaction fraud model served as a real API with explanations. Project 05 will deploy this to AWS, so keep it container-ready.
 Tracks shown: ML, SWE, fintech.
 
 ## Data
