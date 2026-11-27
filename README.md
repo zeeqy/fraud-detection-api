@@ -119,6 +119,13 @@ With Docker (the trained model is committed, so no data download is needed):
 docker compose up --build      # API :8000, demo :8501
 ```
 
+### Deploy to Hugging Face Spaces (free)
+`spaces/` holds a Docker Space image that runs the API internally and the Streamlit demo on port 7860.
+1. Create a Space at huggingface.co/new-space: SDK **Docker**, template **Blank**, hardware **CPU basic (free)**, public.
+2. `uv run --with huggingface-hub hf auth login` (token with write access).
+3. `uv run --with huggingface-hub python scripts/push_space.py <user>/fraud-detection-api`
+4. Watch the build log on the Space page (~3 to 5 min). Local check first: `uv run python scripts/push_space.py --dry-run`, then `docker build -t fraud-space build/space` and `docker run -p 7860:7860 fraud-space`.
+
 ## Model card
 - **Model:** LightGBM, unweighted, early-stopped on validation log-loss. It was chosen over SMOTE and class-weighted variants because their PR-AUC gain was within noise (≤ 0.0004) while they distort probabilities.
 - **Intended use:** portfolio demonstration of a pre-authorisation fraud scorer. **Not** for real decisions.
@@ -144,6 +151,8 @@ notebooks/02_modelling.ipynb  model comparison, threshold, SHAP
 src/fraud/                  features, metrics/cost model, explainer, training
 api/                        FastAPI app, schemas, model loader
 demo/app.py                 Streamlit page that calls the API
+spaces/                     Hugging Face Space image (API + demo on :7860)
+scripts/push_space.py       stages and uploads the Space files
 models/model.joblib         trained model bundle (~165 KB)
 reports/                    metrics.json + figures
 ```

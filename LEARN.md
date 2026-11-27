@@ -19,6 +19,7 @@ The decision threshold is set by a business cost model (missed fraud vs analyst 
 | Explanations | TreeSHAP top 3, mapped to sentences | Feature importance only | Analysts need per-transaction reasons, not global ones |
 | Serving format | joblib bundle (model + threshold + metadata) | MLflow model registry | One file, so the Docker image needs no MLflow server. MLflow is used for experiment tracking |
 | Docker | Multi-stage uv build to slim runtime, non-root, healthcheck | Single stage | Smaller image and less attack surface; ready for AWS in project 05 |
+| Live demo host | Hugging Face Docker Space: API on 127.0.0.1:8000 + Streamlit on 7860 in one container | Streamlit Cloud + a separate API host | One free container, no second service to keep awake; the demo talks to the API over localhost. Uploaded with `huggingface_hub.upload_folder` because Spaces reject binary files (the model) pushed without LFS |
 
 ## 3. Concepts to understand
 - **Class imbalance:** 0.3% fraud means "always legit" scores 99.7% accuracy. Fix the metric (PR-AUC) and optionally the training (weights, SMOTE). `src/fraud/train.py`
@@ -51,7 +52,7 @@ The decision threshold is set by a business cost model (missed fraud vs analyst 
 - **No behavioural features.** "Real fraud models lean on customer history, device and velocity. PaySim doesn't support that, so this project is about the pipeline and the decision process, not state-of-the-art features."
 - **Cost model is simple.** "Missed fraud = amount and review = flat RM15, and PaySim units are treated as RM. It ignores analyst capacity and chargebacks. I'd add an alert budget next."
 - **No fairness measurement.** "PaySim has no demographics, so I couldn't measure fairness. I flagged which features could hurt certain users and recommend per-segment monitoring."
-- **Docker image not built locally.** "Docker Desktop wasn't healthy on my laptop, so CI builds and smoke-tests the image on GitHub Actions."
+- **Two images.** "The API image (`Dockerfile`) is what project 05 deploys; the Space image (`spaces/Dockerfile`) adds the Streamlit demo and runs both processes in one container, which is fine for a demo but not how I'd run production. CI builds and smoke-tests the API image."
 
 ## 6. Resume bullets
 - **[ML]** Built a fraud detection model on 6.36M PaySim transactions comparing logistic regression and LightGBM (class weights, SMOTE). Reached 0.997 PR-AUC and used an ablation to show performance falls to 0.84 without the simulator's leaky signal.
